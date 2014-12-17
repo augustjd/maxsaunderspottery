@@ -1,5 +1,7 @@
 from .db import db
 
+import datetime
+
 
 class Artwork(db.Model):
     '''
@@ -18,7 +20,7 @@ class Artwork(db.Model):
     length = db.Column(db.Float())
     depth = db.Column(db.Float())
 
-    added = db.Column(db.TIMESTAMP)
+    added = db.Column(db.TIMESTAMP, default=datetime.datetime.now())
 
     # the use_alter is important, because these rows mutually
     # reference each other.
