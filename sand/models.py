@@ -1,7 +1,6 @@
-from .db import db
-
 import datetime
 
+from .db import db
 
 class Artwork(db.Model):
     '''
