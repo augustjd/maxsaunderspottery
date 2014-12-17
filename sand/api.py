@@ -1,6 +1,6 @@
 import os
 
-from flask import request
+from flask import request, jsonify
 import flask.ext.restless
 from werkzeug import secure_filename
 from wand.image import Image
@@ -35,7 +35,7 @@ def get_full_image_path(filepath):
 def post_image(id):
     artwork_image = ArtworkImage.query.get(id)
     if artwork_image is None:
-        return {'message': 'No ArtworkImage with that id was found.'}, 400
+        return jsonify({'message': 'No ArtworkImage with id {} was found.'.format(id)}), 400
 
     file = request.files['file']
     if file and is_image(file.filename):
@@ -49,14 +49,14 @@ def post_image(id):
 
             message = '{} successfully uploaded and processed.'\
                       .format(file.filename)
-            return {'message': message}
+            return jsonify({'message': message})
         else:
             message = '{} could not be processed.' .format(file.filename)
-            return {'message': message}, 500
+            return jsonify({'message': message}), 500
     else:
         message = '{} is not a valid image (supported filetypes: {})'\
                   .format(file.filename, ', '.join(SUPPORTED_IMAGE_EXTENSIONS))
-        return {'message': message}, 400
+        return jsonify({'message': message}), 400
 
 
 def process_img(artwork_image, path):
