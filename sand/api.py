@@ -35,7 +35,8 @@ def get_full_image_path(filepath):
 def post_image(id):
     artwork_image = ArtworkImage.query.get(id)
     if artwork_image is None:
-        return jsonify({'message': 'No ArtworkImage with id {} was found.'.format(id)}), 400
+        message = 'No ArtworkImage with id {} was found.'.format(id)
+        return jsonify({'message': message}), 400
 
     file = request.files['file']
     if file and is_image(file.filename):
