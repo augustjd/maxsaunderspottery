@@ -1,6 +1,9 @@
 import datetime
+import os
 
 from .db import db
+from .app import app
+
 
 class Artwork(db.Model):
     '''
@@ -13,7 +16,7 @@ class Artwork(db.Model):
     description = db.Column(db.Text())
 
     price_cents = db.Column(db.Integer())
-    sold = db.Column(db.Boolean())
+    sold = db.Column(db.Boolean(), nullable=False, default=False)
 
     width = db.Column(db.Float())
     length = db.Column(db.Float())
@@ -50,7 +53,10 @@ class ArtworkImage(db.Model):
 
     caption = db.Column(db.Text())
 
-    artwork_id = db.Column(db.Integer, db.ForeignKey('artworks.id'))
+    artwork_id = db.Column(db.Integer,
+                           db.ForeignKey('artworks.id'),
+                           nullable=False)
 
     def filepath(self):
-        return "{}.{}".format(id, ArtworkImage.IMAGE_FORMAT)
+        return os.path.join(app.config['UPLOAD_FOLDER'],
+                            "{}.{}".format(self.id, ArtworkImage.IMAGE_FORMAT))

@@ -1,5 +1,7 @@
 from flask import Flask
 
+import os
+
 app = Flask(__name__, static_folder='static')
 
 DEVELOPMENT_CONFIGS = {
@@ -10,3 +12,5 @@ DEVELOPMENT_CONFIGS = {
 }
 
 app.config.update(DEVELOPMENT_CONFIGS)
+if not os.path.isdir(app.config['UPLOAD_FOLDER']):
+    os.mkdir(app.config['UPLOAD_FOLDER'])

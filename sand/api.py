@@ -5,8 +5,7 @@ import flask.ext.restless
 from werkzeug import secure_filename
 from wand.image import Image
 
-from .models import db, Artwork, ArtworkImage
-from .app import app
+from .models import app, db, Artwork, ArtworkImage
 
 
 manager = flask.ext.restless.APIManager(app, flask_sqlalchemy_db=db)
@@ -15,15 +14,14 @@ manager.create_api(Artwork,
                    methods=['GET', 'POST', 'PUT', 'DELETE'])
 
 manager.create_api(ArtworkImage,
-                   methods=['GET', 'POST', 'PUT', 'DELETE'],
-                   include_methods='filepath')
+                   methods=['GET', 'POST', 'PUT', 'DELETE'])
 
 
 SUPPORTED_IMAGE_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif', 'tif'])
 
 
 def is_image(filename):
-    extension = os.path.splitext(filename)[1]
+    extension = os.path.splitext(filename)[1][1:]
     return extension in SUPPORTED_IMAGE_EXTENSIONS
 
 
@@ -45,7 +43,7 @@ def post_image(id):
         destination_path = get_full_image_path(filename)
         file.save(destination_path)
 
-        if process_img(artwork_image, filename):
+        if process_img(artwork_image, destination_path):
             os.remove(destination_path)
 
             message = '{} successfully uploaded and processed.'\
@@ -61,5 +59,8 @@ def post_image(id):
 
 
 def process_img(artwork_image, path):
+    destination_path = artwork_image.filepath()
     with Image(filename=path) as img:
-        return img.save(filename=get_full_image_path(artwork_image.filepath()))
+        img.save(filename=destination_path)
+
+    return os.path.isfile(destination_path)
