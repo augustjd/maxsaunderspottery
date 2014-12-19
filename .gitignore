@@ -1,3 +1,4 @@
 *.pyc
 sand/static/.sass-cache/*
 *.png
+*.db
