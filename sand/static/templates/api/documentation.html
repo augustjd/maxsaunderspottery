@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html {
+  background:#ddd;
+  font-family:Arial, sans-serif;
+	font-size:11pt;
+}
+body {
+  background:#eee;
+
+  margin:auto;
+  max-width:50em;
+
+  padding:1em;
+}
+
+.box {
+  background:white;
+  padding:0.5em;
+  border-radius:10px;
+  border:1px solid #BBB;
+  margin:0.5em 0;
+
+  overflow:hidden;
+}
+h2,h3,h4,h5 {
+  display:block;
+  padding:0;
+  margin:0;
+}
+pre {
+  margin:0;
+  padding:0.5em;
+  background:#ccc;
+	border-radius:5px;
+}
+.api code.method {
+	display:inline;
+}
+code.method {
+	width:5em;
+	display:inline-block;
+  font-weight:bold;
+  margin-right:0.5em;
+}
+p {
+	max-width:30em;
+}
+h3 {
+	margin-top:1.5em;
+}
+h4 {
+	font-size:1.25em;
+	color:hsl(210,100%,50%);
+	font-weight:normal;
+	margin-bottom:0.25em;
+}
+h2 {
+	margin-top:1.5em;
+}
+</style>
+</head>
+<body>
+<h2>Summary of Routes</h2>
+
+<pre>
+<code class='method'>POST</code><code class='route'>/api/artworks</code>
+<code class='method'>GET</code><code class='route'>/api/artworks/&lt;id&gt;</code>
+<code class='method'>PUT</code><code class='route'>/api/artworks/&lt;id&gt;</code>
+<code class='method'>GET</code><code class='route'>/api/artworks</code>
+<code class='method'>GET</code><code class='route'>/static/img/artworks/&lt;id&gt;.png</code>
+<code class='method'>DELETE</code><code class='route'>/api/artworks/&lt;id&gt;</code>
+
+<code class='method'>POST</code><code class='route'>/api/artwork_images</code>
+<code class='method'>POST</code><code class='route'>/api/artwork_images/&lt;id&gt;/image</code>
+<code class='method'>PUT</code><code class='route'>/api/artwork_images/&lt;id&gt;</code>
+<code class='method'>DELETE</code><code class='route'>/api/artwork_images/&lt;id&gt;</code>
+</pre>
+
+<h2>Goal-Oriented API Documentation</h2>
+
+<h3>Artworks</h3>
+<div class='box goal'>
+<h4>Create a new artwork</h4>
+<div class='api'>
+  <code class='method'>POST</code><code class='route'>/api/artworks</code>
+</div>
+<pre><code class='payload'>{
+  "title":"A Beautiful Pot",
+  "description":"So nice.",
+  "price_cents":8000,
+  "width":3.55,
+  "length":3.55,
+  "depth":3.55
+}</code></pre>
+</div>
+
+
+<div class='box goal'>
+<h4>Get a single existing artwork by ID</h4>
+<div class='api'>
+  <code class='method'>GET</code><code class='route'>/api/artworks/&lt;id&gt;</code>
+</div>
+</div>
+
+<div class='box goal'>
+<h4>Modify an existing artwork by ID</h4>
+<div class='api'>
+  <code class='method'>PUT</code><code class='route'>/api/artworks/&lt;id&gt;</code>
+</div>
+<pre><code class='payload'>{
+  "title":"An Even More Beautiful Pot",
+  "description":"So nice.",                // optional
+  "price_cents":8000,                      // optional
+  "width":3.55,                            // optional
+  "length":3.55,                           // optional
+  "depth":3.55                             // optional
+}</code></pre>
+</div>
+
+<div class='box goal'>
+<h4>Get all existing artworks</h4>
+<div class='api'>
+  <code class='method'>GET</code><code class='route'>/api/artworks</code>
+</div>
+<h5>Result:</h5>
+<pre><code class='result'>{
+  "num_results": 2,
+  "objects": [
+    {
+      "added": "2014-12-17T17:35:10.745533",
+      "depth": null,
+      "description": null,
+      "id": 1,
+      "images": [],
+      "length": null,
+      "price_cents": null,
+      "primary_image": null,
+      "primary_image_id": null,
+      "sold": null,
+      "title": "Test Image",
+      "width": null
+    },
+    ...
+  ],
+  "page": 1,
+  "total_pages": 1
+}</code></pre>
+</div>
+
+<div class='box goal'>
+<h4>Get the primary image associated with artwork by the artwork's ID</h4>
+<div class='api'>
+  <code class='method'>GET</code><code class='route'>/static/img/artworks/&lt;id&gt;.png</code>
+</div>
+</div>
+
+<div class='box goal'>
+<h4>Delete a artwork by ID</h4>
+<div class='api'>
+  <code class='method'>DELETE</code><code class='route'>/api/artworks/&lt;id&gt;</code>
+</div>
+</div>
+
+<h3>Artwork Images</h3>
+<div class='box goal'>
+<h4>Create a new artwork image</h4>
+<div class='api'>
+  <code class='method'>POST</code><code class='route'>/api/artwork_images</code>
+</div>
+<pre><code class='payload'>{
+  "artwork_id":1,
+  "title":"Side View"                           // optional
+  "caption":"A side view of the beautiful pot." // optional
+}</code></pre>
+<p>
+  (allocates the database reference for the image)
+</p>
+  <h5>THEN</h5>
+<div class='api'>
+  <code class='method'>POST</code><code class='route'>/api/artwork_images/&lt;id&gt;/image</code>
+</div>
+<p>
+  POST the actual image file, as an enctype="multipart/form-data" (ordinary file
+  upload) file. Types supported: .gif, .jpeg, .png, .jpg, .tif.
+</p>
+</div>
+
+<div class='box goal'>
+<h4>Modify an existing artwork image by ID</h4>
+<div class='api'>
+  <code class='method'>PUT</code><code class='route'>/api/artwork_images/&lt;id&gt;</code>
+</div>
+<pre><code class='payload'>{
+  "artwork_id":2,
+  "title":"Great Side View"                     // optional
+  "caption":"A side view of the beautiful pot." // optional
+}</code></pre>
+</div>
+
+<div class='box goal'>
+<h4>Delete a artwork image by ID</h4>
+<div class='api'>
+  <code class='method'>DELETE</code><code class='route'>/api/artwork_images/&lt;id&gt;</code>
+</div>
+</div>
+
+<h2>Route-Oriented API Documentation</h2>
+<p>To be continued...</p>
+</body>
+</html>
