@@ -16,7 +16,6 @@ manager.create_api(Artwork,
 manager.create_api(ArtworkImage,
                    methods=['GET', 'POST', 'PUT', 'DELETE'])
 
-
 SUPPORTED_IMAGE_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif', 'tif'])
 
 
@@ -46,8 +45,8 @@ def post_image(id):
         if process_img(artwork_image, destination_path):
             os.remove(destination_path)
 
-            message = '{} successfully uploaded and processed.'\
-                      .format(file.filename)
+            message = '{} successfully uploaded and processed into {}.'\
+                      .format(file.filename, artwork_image.filepath())
             return jsonify({'message': message})
         else:
             message = '{} could not be processed.' .format(file.filename)

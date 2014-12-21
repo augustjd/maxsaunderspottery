@@ -7,7 +7,7 @@ app = Flask(__name__, static_folder='static')
 DEVELOPMENT_CONFIGS = {
     'DEBUG': True,
     'SQLALCHEMY_DATABASE_URI': 'sqlite:///./development.db',
-    'UPLOAD_FOLDER': 'uploads/',
+    'UPLOAD_FOLDER': './sand/static/uploads/',
     'STATIC_FOLDER': 'static/'
 }
 
