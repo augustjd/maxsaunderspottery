@@ -1,0 +1,8 @@
+<div ng-controller='MainController'>
+  <ul>
+    <li ng-repeat='artwork in artworks'>
+    <a ng-href="#/artwork/{{artwork.id}}">{{artwork.title}}</a>
+		<img ng-src="/static/uploads/{{artwork.id}}.png"/>
+    </li>
+  </ul>
+</div>
