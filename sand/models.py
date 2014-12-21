@@ -1,6 +1,8 @@
 import datetime
 import os
+import shutil
 
+from sqlalchemy import event
 from .db import db
 from .app import app
 
@@ -37,7 +39,39 @@ class Artwork(db.Model):
                                     primaryjoin="Artwork.primary_image_id == ArtworkImage.id")
 
     images = db.relationship('ArtworkImage',
-                             primaryjoin="Artwork.id == ArtworkImage.artwork_id")
+                             primaryjoin="Artwork.id == ArtworkImage.artwork_id",
+                             backref='artwork')
+
+
+def artwork_image_filepath(artwork_id, artwork_image_id=None, is_primary=True):
+    if is_primary:
+        return os.path.join(app.config['UPLOAD_FOLDER'],
+                            "{}.{}".format(artwork_id,
+                                           ArtworkImage.IMAGE_FORMAT))
+    else:
+        return os.path.join(app.config['UPLOAD_FOLDER'],
+                            "{}-{}.{}".format(artwork_id, artwork_image_id,
+                                              ArtworkImage.IMAGE_FORMAT))
+
+
+@event.listens_for(Artwork.primary_image_id, 'set', retval=True)
+def copy_image_to_primary_image_slot(target, value, oldvalue, initiator):
+    artwork_id = target.id
+
+    current_path = artwork_image_filepath(artwork_id, value, is_primary=False)
+    artwork_image_path = artwork_image_filepath(artwork_id)
+    try:
+        print("Since {} is now primary, copying {} to {}".format(
+            value, current_path, artwork_image_path))
+
+        shutil.copyfile(current_path, artwork_image_path)
+
+        return value
+    except IOError:
+        print("Failed to copy {} to {}. Rolling back primary id to {}".format(
+            current_path, artwork_image_path, oldvalue))
+
+        return oldvalue
 
 
 class ArtworkImage(db.Model):
@@ -57,6 +91,27 @@ class ArtworkImage(db.Model):
                            db.ForeignKey('artworks.id'),
                            nullable=False)
 
+    def make_primary(self, session):
+        old_path = self.filepath()
+        self.artwork.primary_image_id = self.id
+        new_path = self.filepath()
+
+        try:
+            os.rename(old_path, new_path)
+            print("To make {} primary, moved {} to {}.".format(self.id,
+                                                               old_path,
+                                                               new_path))
+            session.commit()
+            return True
+        except OSError:
+            print("Failed to move {} to {}.".format(self.id,
+                                                    old_path,
+                                                    new_path))
+            return False
+
+    def is_primary(self):
+        return self.artwork.primary_image_id == self.id
+
     def filepath(self):
-        return os.path.join(app.config['UPLOAD_FOLDER'],
-                            "{}.{}".format(self.id, ArtworkImage.IMAGE_FORMAT))
+        return artwork_image_filepath(self.artwork_id,
+                                      self.id, self.is_primary)
