@@ -91,23 +91,8 @@ class ArtworkImage(db.Model):
                            db.ForeignKey('artworks.id'),
                            nullable=False)
 
-    def make_primary(self, session):
-        old_path = self.filepath()
-        self.artwork.primary_image_id = self.id
-        new_path = self.filepath()
-
-        try:
-            os.rename(old_path, new_path)
-            print("To make {} primary, moved {} to {}.".format(self.id,
-                                                               old_path,
-                                                               new_path))
-            session.commit()
-            return True
-        except OSError:
-            print("Failed to move {} to {}.".format(self.id,
-                                                    old_path,
-                                                    new_path))
-            return False
+    def url(self):
+        return os.path.relpath(self.filepath())
 
     def is_primary(self):
         return self.artwork.primary_image_id == self.id

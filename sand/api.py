@@ -14,7 +14,8 @@ manager.create_api(Artwork,
                    methods=['GET', 'POST', 'PUT', 'DELETE'])
 
 manager.create_api(ArtworkImage,
-                   methods=['GET', 'POST', 'PUT', 'DELETE'])
+                   methods=['GET', 'POST', 'PUT', 'DELETE'],
+                   include_methods=['url'])
 
 SUPPORTED_IMAGE_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif', 'tif'])
 
