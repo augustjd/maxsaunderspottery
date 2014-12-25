@@ -1,0 +1,44 @@
+<h1>Gallery</h1>
+
+<div class='container'>
+  <div class='row'>
+    <div class='highlight col-md-12'>
+      <div class='overlay'>
+        <h3>The first cup</h3>
+      </div>
+      <img ng-src="/static/uploads/2.png"/>
+    </div>
+  </div>
+  <ul class='gallery row unstyled'>
+    <li ng-repeat='artwork in artworks' class='col-md-3'>
+      <a ng-href="#/artwork/{{artwork.id}}" class='artwork'>
+        <span class='title'>{{artwork.title}}</span>
+        <img ng-src="/static/uploads/{{artwork.id}}-square.png" class='square'/>
+      </a>
+    </li>
+    <li ng-repeat='artwork in artworks' class='col-md-3'>
+      <a ng-href="#/artwork/{{artwork.id}}" class='artwork'>
+        <span class='title'>{{artwork.title}}</span>
+        <img ng-src="/static/uploads/{{artwork.id}}.png" class='square'/>
+      </a>
+    </li>
+    <li ng-repeat='artwork in artworks' class='col-md-3'>
+      <a ng-href="#/artwork/{{artwork.id}}" class='artwork'>
+        <span class='title'>{{artwork.title}}</span>
+        <img ng-src="/static/uploads/{{artwork.id}}.png" class='square'/>
+      </a>
+    </li>
+    <li ng-repeat='artwork in artworks' class='col-md-3'>
+      <a ng-href="#/artwork/{{artwork.id}}" class='artwork'>
+        <span class='title'>{{artwork.title}}</span>
+        <img ng-src="/static/uploads/{{artwork.id}}.png" class='square'/>
+      </a>
+    </li>
+    <li ng-repeat='artwork in artworks' class='col-md-3'>
+      <a ng-href="#/artwork/{{artwork.id}}" class='artwork'>
+        <span class='title'>{{artwork.title}}</span>
+        <img ng-src="/static/uploads/{{artwork.id}}.png" class='square'/>
+      </a>
+    </li>
+  </ul>
+</div>

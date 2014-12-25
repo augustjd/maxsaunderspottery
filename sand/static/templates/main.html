@@ -1,8 +1,16 @@
-<div ng-controller='MainController'>
-  <ul>
-    <li ng-repeat='artwork in artworks'>
-    <a ng-href="#/artwork/{{artwork.id}}">{{artwork.title}}</a>
-		<img ng-src="/static/uploads/{{artwork.id}}.png"/>
-    </li>
-  </ul>
+<div ng-controller='MainController' class='front full-height'>
+	<div class='menu full-height pane'>
+		<h2>Max Saunders</h2>
+    <h1>Pottery</h1>
+		<nav>
+      <a href='/#/gallery'>gallery</a>
+			<a href='/#/'>about me</a>
+			<a href='/#/'>contact</a>
+		</nav>
+	</div>
+	<div class='front-image full-height pane'>
+    <div class='center-image full-height full-width'>
+      <img src='/static/uploads/2.png'/>
+    </div>
+	</div>
 </div>

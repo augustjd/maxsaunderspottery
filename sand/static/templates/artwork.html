@@ -1,2 +1,60 @@
-<a ng-href='/#/'>Back</a>
-<h1>{{artwork.title}}</h1>
+<div class='container'>
+  <div class='row'>
+    <a ng-href='/#/'>Back</a>
+    <h1>{{artwork.title}}</h1>
+  </div>
+
+  <div class='row'>
+    <div class='highlight col-md-12'>
+      <img ng-src="/static/uploads/{{artwork.id}}.png"/>
+    </div>
+
+    <div ng-repeat="image in artwork.images" class='col-md-3'>
+      <img ng-src="{{image.url}}" class='square'/>
+    </div>
+  </div>
+
+  <div class='row'>
+    <div class='col-md-6 col-md-offset-3'>
+      <p>{{artwork.description}}
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ac
+			consequat libero. Morbi ornare vestibulum posuere. Cum sociis natoque
+			penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam id
+			libero vel metus commodo efficitur. Morbi congue varius nulla a hendrerit.
+			Integer tristique, lorem non sagittis tincidunt, libero magna mollis
+			turpis, vitae molestie nunc magna sed lorem. Nam vitae posuere dolor, at
+			vehicula dolor. Vestibulum ante ipsum primis in faucibus orci luctus et
+			ultrices posuere cubilia Curae; Mauris sodales, augue at varius
+			consectetur, lectus orci ullamcorper lorem, a volutpat purus tellus nec
+			ipsum. Donec ac sapien neque. Aenean lobortis sem leo, sit amet porta
+			lacus interdum in. Maecenas ac tortor eget justo dapibus tristique. Sed
+			volutpat mi id dictum mollis. Fusce auctor ipsum sit amet sem dapibus
+			rhoncus. Quisque mollis imperdiet volutpat.
+			</p>
+			<p>
+			Curabitur ut enim nec eros feugiat egestas sed sed augue. Vivamus cursus,
+			tortor non dictum laoreet, nibh quam elementum augue, in molestie erat
+			urna ut lorem. Donec fermentum mollis magna, quis tincidunt enim bibendum
+			quis. Vivamus vehicula, lacus at tincidunt porta, nibh justo pretium ante,
+			in lobortis nisi nisl eu ipsum. Nam tristique commodo orci, tincidunt
+			placerat nunc vestibulum et. Ut fermentum, dolor sed faucibus auctor,
+			lectus velit tincidunt metus, eget ultricies nibh arcu eget purus. Nullam
+			tincidunt hendrerit blandit. Duis sodales mollis enim non vehicula.
+			Aliquam maximus varius elit eget sollicitudin.
+			</p>
+			<p>
+			Duis pretium nulla quis justo lobortis hendrerit sodales a mi. Integer sit
+			amet varius urna, vitae varius sapien. Maecenas bibendum libero et
+			scelerisque posuere. Vestibulum finibus egestas felis, sit amet ultrices
+			lacus blandit in. Pellentesque egestas maximus urna, sit amet pellentesque
+			diam eleifend a. Integer eu fringilla felis, in euismod ex. Maecenas at
+			maximus orci. Aenean eleifend diam lacus, id ornare urna pretium id. Proin
+			nec vulputate nulla.
+			</p>
+			<div>
+			<strong>Size:</strong>{{artwork.length}}cm &times;{{artwork.width}}cm &times;{{artwork.depth}}cm
+			</div>
+			<div class='price'>{{artwork.price_str}}</div>
+    </div>
+  </div>
+</div>
