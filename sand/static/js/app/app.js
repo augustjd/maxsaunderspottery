@@ -6,6 +6,10 @@ sand.config(['$routeProvider', function($routeProvider) {
             templateUrl:'static/templates/main.html',
             controller:'MainController'
         })
+        .when('/gallery', {
+            templateUrl:'static/templates/gallery.html',
+            controller:'GalleryController'
+        })
         .when('/artwork/:artwork_id', {
             templateUrl:'static/templates/artwork.html',
             controller:'ArtworkDetailController'
@@ -17,9 +21,15 @@ sand.run(['$rootScope', '$http', '$q', function($rootScope, $http, $q) {
         return $http.get('/api/artworks')
             .success(function(response) {
                 $rootScope.artworks = {};
+
                 response.objects.forEach(function(v) {
+                    v.images.forEach(function(image) {
+                        image.url = ["/static/uploads/", image.artwork_id, "-", image.id, ".png"].join("");
+                    });
+                    v.price_str = "$" + (v.price_cents / 100).toFixed(2);
                     $rootScope.artworks[v.id] = v;
                 });
+                console.log($rootScope.artworks);
             })
             .error(function(response) {
                 console.log("Failed to get artworks:");
@@ -41,6 +51,10 @@ sand.run(['$rootScope', '$http', '$q', function($rootScope, $http, $q) {
 }]);
 
 sand.controller('MainController', ['$scope', '$rootScope', '$http', function($scope, $rootScope, $http) {
+    $rootScope.load_artworks_if_not_present();
+}]);
+
+sand.controller('GalleryController', ['$scope', '$rootScope', '$http', function($scope, $rootScope, $http) {
     $rootScope.load_artworks_if_not_present();
 }]);
 
